@@ -92,6 +92,234 @@ query IssuesForKb(
             }
           }
         }
+        timelineItems(
+          first: 100
+          itemTypes: [
+            ASSIGNED_EVENT
+            CLOSED_EVENT
+            CROSS_REFERENCED_EVENT
+            DEMILESTONED_EVENT
+            LABELED_EVENT
+            MARKED_AS_DUPLICATE_EVENT
+            MILESTONED_EVENT
+            REFERENCED_EVENT
+            RENAMED_TITLE_EVENT
+            REOPENED_EVENT
+            UNASSIGNED_EVENT
+            UNLABELED_EVENT
+            UNMARKED_AS_DUPLICATE_EVENT
+          ]
+        ) {
+          totalCount
+          pageInfo {
+            hasNextPage
+            endCursor
+          }
+          nodes {
+            __typename
+            ... on AssignedEvent {
+              createdAt
+              actor {
+                login
+                url
+              }
+              assignee {
+                __typename
+                ... on User {
+                  login
+                  url
+                }
+                ... on Bot {
+                  login
+                  url
+                }
+                ... on Mannequin {
+                  login
+                  url
+                }
+              }
+            }
+            ... on ClosedEvent {
+              createdAt
+              actor {
+                login
+                url
+              }
+              closer {
+                __typename
+                ... on Commit {
+                  oid
+                  url
+                }
+                ... on PullRequest {
+                  number
+                  title
+                  url
+                  state
+                  merged
+                }
+              }
+            }
+            ... on CrossReferencedEvent {
+              createdAt
+              actor {
+                login
+                url
+              }
+              source {
+                __typename
+                ... on Issue {
+                  number
+                  title
+                  url
+                  state
+                }
+                ... on PullRequest {
+                  number
+                  title
+                  url
+                  state
+                  merged
+                }
+              }
+            }
+            ... on DemilestonedEvent {
+              createdAt
+              actor {
+                login
+                url
+              }
+              milestoneTitle
+            }
+            ... on LabeledEvent {
+              createdAt
+              actor {
+                login
+                url
+              }
+              label {
+                name
+                color
+                description
+              }
+            }
+            ... on MarkedAsDuplicateEvent {
+              createdAt
+              actor {
+                login
+                url
+              }
+              canonical {
+                __typename
+                ... on Issue {
+                  number
+                  title
+                  url
+                  state
+                }
+                ... on PullRequest {
+                  number
+                  title
+                  url
+                  state
+                  merged
+                }
+              }
+            }
+            ... on MilestonedEvent {
+              createdAt
+              actor {
+                login
+                url
+              }
+              milestoneTitle
+            }
+            ... on ReferencedEvent {
+              createdAt
+              actor {
+                login
+                url
+              }
+              commit {
+                oid
+                url
+              }
+            }
+            ... on RenamedTitleEvent {
+              createdAt
+              actor {
+                login
+                url
+              }
+              currentTitle
+              previousTitle
+            }
+            ... on ReopenedEvent {
+              createdAt
+              actor {
+                login
+                url
+              }
+            }
+            ... on UnassignedEvent {
+              createdAt
+              actor {
+                login
+                url
+              }
+              assignee {
+                __typename
+                ... on User {
+                  login
+                  url
+                }
+                ... on Bot {
+                  login
+                  url
+                }
+                ... on Mannequin {
+                  login
+                  url
+                }
+              }
+            }
+            ... on UnlabeledEvent {
+              createdAt
+              actor {
+                login
+                url
+              }
+              label {
+                name
+                color
+                description
+              }
+            }
+            ... on UnmarkedAsDuplicateEvent {
+              createdAt
+              actor {
+                login
+                url
+              }
+              canonical {
+                __typename
+                ... on Issue {
+                  number
+                  title
+                  url
+                  state
+                }
+                ... on PullRequest {
+                  number
+                  title
+                  url
+                  state
+                  merged
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -123,6 +351,249 @@ query IssueCommentsForKb(
           url
           createdAt
           updatedAt
+        }
+      }
+    }
+  }
+}
+"""
+
+
+TIMELINE_QUERY = """
+query IssueTimelineForKb(
+  $owner: String!
+  $name: String!
+  $number: Int!
+  $after: String
+) {
+  repository(owner: $owner, name: $name) {
+    issue(number: $number) {
+      timelineItems(
+        first: 100
+        after: $after
+        itemTypes: [
+          ASSIGNED_EVENT
+          CLOSED_EVENT
+          CROSS_REFERENCED_EVENT
+          DEMILESTONED_EVENT
+          LABELED_EVENT
+          MARKED_AS_DUPLICATE_EVENT
+          MILESTONED_EVENT
+          REFERENCED_EVENT
+          RENAMED_TITLE_EVENT
+          REOPENED_EVENT
+          UNASSIGNED_EVENT
+          UNLABELED_EVENT
+          UNMARKED_AS_DUPLICATE_EVENT
+        ]
+      ) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        nodes {
+          __typename
+          ... on AssignedEvent {
+            createdAt
+            actor {
+              login
+              url
+            }
+            assignee {
+              __typename
+              ... on User {
+                login
+                url
+              }
+              ... on Bot {
+                login
+                url
+              }
+              ... on Mannequin {
+                login
+                url
+              }
+            }
+          }
+          ... on ClosedEvent {
+            createdAt
+            actor {
+              login
+              url
+            }
+            closer {
+              __typename
+              ... on Commit {
+                oid
+                url
+              }
+              ... on PullRequest {
+                number
+                title
+                url
+                state
+                merged
+              }
+            }
+          }
+          ... on CrossReferencedEvent {
+            createdAt
+            actor {
+              login
+              url
+            }
+            source {
+              __typename
+              ... on Issue {
+                number
+                title
+                url
+                state
+              }
+              ... on PullRequest {
+                number
+                title
+                url
+                state
+                merged
+              }
+            }
+          }
+          ... on DemilestonedEvent {
+            createdAt
+            actor {
+              login
+              url
+            }
+            milestoneTitle
+          }
+          ... on LabeledEvent {
+            createdAt
+            actor {
+              login
+              url
+            }
+            label {
+              name
+              color
+              description
+            }
+          }
+          ... on MarkedAsDuplicateEvent {
+            createdAt
+            actor {
+              login
+              url
+            }
+            canonical {
+              __typename
+              ... on Issue {
+                number
+                title
+                url
+                state
+              }
+              ... on PullRequest {
+                number
+                title
+                url
+                state
+                merged
+              }
+            }
+          }
+          ... on MilestonedEvent {
+            createdAt
+            actor {
+              login
+              url
+            }
+            milestoneTitle
+          }
+          ... on ReferencedEvent {
+            createdAt
+            actor {
+              login
+              url
+            }
+            commit {
+              oid
+              url
+            }
+          }
+          ... on RenamedTitleEvent {
+            createdAt
+            actor {
+              login
+              url
+            }
+            currentTitle
+            previousTitle
+          }
+          ... on ReopenedEvent {
+            createdAt
+            actor {
+              login
+              url
+            }
+          }
+          ... on UnassignedEvent {
+            createdAt
+            actor {
+              login
+              url
+            }
+            assignee {
+              __typename
+              ... on User {
+                login
+                url
+              }
+              ... on Bot {
+                login
+                url
+              }
+              ... on Mannequin {
+                login
+                url
+              }
+            }
+          }
+          ... on UnlabeledEvent {
+            createdAt
+            actor {
+              login
+              url
+            }
+            label {
+              name
+              color
+              description
+            }
+          }
+          ... on UnmarkedAsDuplicateEvent {
+            createdAt
+            actor {
+              login
+              url
+            }
+            canonical {
+              __typename
+              ... on Issue {
+                number
+                title
+                url
+                state
+              }
+              ... on PullRequest {
+                number
+                title
+                url
+                state
+                merged
+              }
+            }
+          }
         }
       }
     }
@@ -210,6 +681,7 @@ class GitHubIssueExporter:
             for issue in issues["nodes"]:
                 issue["repo"] = f"{owner}/{name}"
                 issue["comments"]["nodes"] = self._complete_comments(owner, name, issue)
+                issue["timelineItems"]["nodes"] = self._complete_timeline(owner, name, issue)
                 yield issue
                 exported += 1
                 if limit is not None and exported >= limit:
@@ -242,3 +714,24 @@ class GitHubIssueExporter:
 
         return comments
 
+    def _complete_timeline(self, owner: str, name: str, issue: dict[str, Any]) -> list[dict[str, Any]]:
+        events = list(issue["timelineItems"]["nodes"])
+        page_info = issue["timelineItems"]["pageInfo"]
+        after = page_info["endCursor"]
+
+        while page_info["hasNextPage"]:
+            data = self.graphql(
+                TIMELINE_QUERY,
+                {
+                    "owner": owner,
+                    "name": name,
+                    "number": issue["number"],
+                    "after": after,
+                },
+            )
+            page = data["repository"]["issue"]["timelineItems"]
+            events.extend(page["nodes"])
+            page_info = page["pageInfo"]
+            after = page_info["endCursor"]
+
+        return events

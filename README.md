@@ -6,7 +6,8 @@ Export GitHub issues into two knowledge-base-friendly formats:
 - Markdown documents, one issue per file
 
 The exporter uses GitHub GraphQL so it can keep issue metadata, labels,
-assignees, milestones, comments, and closing pull requests together.
+assignees, milestones, comments, closing pull requests, and timeline events
+together.
 
 ## Install
 
@@ -61,4 +62,8 @@ exports/kubeblocks/
 - Comments are fully paginated per issue.
 - Closing pull request references are included when GitHub exposes them for an
   issue.
-
+- Timeline events include common state-changing and relationship events such as
+  labels, assignees, milestones, reopen/close, references, duplicate markers,
+  and title changes.
+- User-authored Markdown headings inside issue bodies and comments are demoted
+  before rendering so they do not collide with the exporter's document sections.
