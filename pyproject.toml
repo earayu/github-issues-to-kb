@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "github-issues-to-kb"
+version = "0.1.0"
+description = "Export GitHub issues to raw JSONL and knowledge-base-friendly Markdown."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [
+  { name = "earayu" }
+]
+keywords = ["github", "issues", "knowledge-base", "rag", "graphql", "markdown", "jsonl"]
+dependencies = []
+
+[project.scripts]
+github-issues-to-kb = "github_issues_to_kb.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/github_issues_to_kb"]
+
